@@ -1,0 +1,323 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="DealNet Rankings Index — SAM and trend across every Market Map Ranking.">
+<title>Rankings Index</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,300&display=swap">
+<style>
+/* Layout: dark cover band, sticky 2-page nav. Page 1 = YTD update, SAM per MMR, SAM trend. Page 2 = MMR selector driving RGO + top 10 Investor-Backed. */
+:root{
+  --bg:#ffffff; --surface:#f5f5f5; --fg:#00080f; --muted:#2c4251; --rule:#c1c1c1;
+  --blue:#0076a8; --green:#618b25; --cover:#00080f; --cover-fg:#ffffff; --head-fg:#ffffff;
+  --font:"Inter","Roboto","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b1219; --surface:#121c26; --fg:#e8eef3; --muted:#9fb3c2; --rule:#2c4251;
+  --blue:#3aa3d4; --green:#8cbf47; --cover:#00080f; --cover-fg:#ffffff; --head-fg:#ffffff; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b1219; --surface:#121c26; --fg:#e8eef3; --muted:#9fb3c2; --rule:#2c4251;
+  --blue:#3aa3d4; --green:#8cbf47; --cover:#00080f; --cover-fg:#ffffff; --head-fg:#ffffff; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.cover{background:var(--cover);color:var(--cover-fg)}
+.cover .wrap{padding-block:52px 44px}
+.hero{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:40px;align-items:center}
+.hero-copy{display:grid;gap:14px;min-width:0}
+.hero-lede{font-size:clamp(19px,2.4vw,23px);font-weight:600;color:#ffffff!important;line-height:1.35;text-wrap:balance}
+.hero-cta{margin-top:6px;width:fit-content;background:#0076a8;color:#ffffff;font-weight:600;text-decoration:none;padding:11px 20px;border-radius:3px}
+.hero-cta:hover{background:#0089c2}
+.hero-cta:focus-visible{outline:2px solid #ffffff;outline-offset:2px}
+.hero-facts{list-style:none;margin:0;padding:0;display:grid;gap:0;border-left:3px solid #0076a8}
+.hero-facts li{display:grid;gap:2px;padding:14px 0 14px 20px;border-bottom:.5pt solid #2c4251}
+.hero-facts li:last-child{border-bottom:0}
+.hero-facts b{font-size:22px;font-weight:700;color:#ffffff}
+.hero-facts span{font-size:14px;color:#c1c1c1}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:28px}}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#c1c1c1;font-weight:600}
+h1{font-size:clamp(30px,5vw,46px);font-weight:700;margin:0;text-wrap:balance}
+.cover p{margin:0;max-width:62ch;color:#c1c1c1}
+.placeholder{display:inline-block;border:1px solid var(--blue);color:#ffffff;background:var(--blue);font-size:12px;font-weight:600;padding:3px 10px;border-radius:3px;width:fit-content}
+main .wrap{padding-block:36px 48px;display:grid;gap:44px}
+section{display:grid;gap:14px}
+h2{font-size:22px;font-weight:600;margin:0;color:var(--fg);text-wrap:balance}
+h2 span{color:var(--blue)}
+.lede{margin:0;color:var(--muted);max-width:68ch}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpi{border-top:3px solid var(--blue);background:var(--surface);padding:14px 16px;display:grid;gap:4px}
+.kpi b{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}
+.kpi small{color:var(--muted);font-size:12px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:640px;font-variant-numeric:tabular-nums}
+th{background:#0076a8;color:var(--head-fg);font-weight:700;text-align:left;padding:10px 12px;font-size:13px}
+td{padding:10px 12px;border-bottom:.5pt solid var(--rule)}
+tbody tr:nth-child(even) td{background:var(--surface)}
+td.num,th.num{text-align:right}
+.tbd{color:var(--muted)}
+.chart{margin:0;background:var(--surface);padding:16px 18px;display:grid;gap:10px}
+.chart figcaption{font-size:13px;font-weight:600;color:var(--muted)}
+.bar-row{display:grid;grid-template-columns:minmax(90px,22%) minmax(0,1fr) auto;gap:10px;align-items:center;font-size:13px;font-variant-numeric:tabular-nums}
+.bar-track{height:18px;background:var(--bg);border-bottom:.5pt solid var(--rule)}
+.bar{height:100%;background:var(--blue)}
+.bar-row .val{color:var(--fg);font-weight:600;min-width:7ch;text-align:right}
+.bar-row .lbl{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:6px}
+.sw{display:inline-block;width:12px;height:12px}
+.sw.pre,.bar.pre{background:var(--muted)}
+.sw.cur{background:var(--blue)}
+.pair{display:grid;gap:3px}
+.pair .bar-track{height:12px}
+.up{color:var(--green)}
+.empty{margin:0;color:var(--muted);font-size:14px;padding:14px 0;border-top:.5pt dashed var(--rule)}
+.rgo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.rgo div{background:var(--surface);padding:16px;display:grid;gap:6px;border-top:3px solid var(--rule)}
+.rgo div:nth-child(1){border-top-color:#a63d40}
+.rgo div:nth-child(2){border-top-color:var(--muted)}
+.rgo div:nth-child(3){border-top-color:var(--green)}
+.rgo h3{margin:0;font-size:15px;font-weight:600}
+.rgo p{margin:0;color:var(--muted);font-size:14px}
+.blind td.name{letter-spacing:.2em;color:var(--muted)}
+.cta{background:var(--surface);border-left:4px solid var(--blue);padding:22px;display:grid;gap:10px}
+.cta a{color:#ffffff;background:#0076a8;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:3px;width:fit-content}
+.cta a:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+footer .wrap{padding-block:18px 28px;border-top:.5pt solid var(--rule);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;font-size:12px;font-weight:300;font-style:italic;color:var(--muted)}
+footer .defs{flex-basis:100%;margin:0;font-size:12px;line-height:1.5;font-style:italic;font-weight:300;max-width:none}
+footer .defs b{font-weight:600;font-style:normal}
+@media (max-width:720px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.rgo{grid-template-columns:1fr}}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:.5pt solid var(--rule)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.nav .wrap{display:flex;gap:4px;padding-block:0}
+.nav a{padding:14px 14px 12px;color:var(--muted);text-decoration:none;font-weight:600;font-size:14px;border-bottom:3px solid transparent}
+.nav a[aria-current="page"]{color:var(--fg);border-bottom-color:var(--blue)}
+.nav a:focus-visible,.chip:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.picker{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{font:inherit;font-size:13px;font-weight:600;padding:7px 14px;border-radius:999px;border:1px solid var(--rule);background:var(--bg);color:var(--fg);cursor:pointer}
+.chip[aria-pressed="true"]{background:#0076a8;border-color:#0076a8;color:#ffffff}
+.chip.ghost{border-style:dashed;color:var(--muted)}
+.mmr-block{display:grid;gap:10px}
+.mmr-block h3.mmr{margin:0;font-size:16px;font-weight:600}
+.page[hidden]{display:none!important}
+</style>
+
+<style id="dnx-nav-css">
+html body{margin:0}
+.dnx-bar{background:#00080f;font-family:Inter,Roboto,'Helvetica Neue',Arial,sans-serif;position:relative;z-index:50}
+.dnx-in{max-width:1180px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.dnx-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
+.dnx-mark{width:32px;height:32px;border-radius:7px;background:#0076a8;display:flex;align-items:center;justify-content:center;flex:none}
+.dnx-name{font-weight:700;font-size:17px;line-height:1.1;color:#fff}
+.dnx-tag{display:block;font-weight:400;font-size:11px;color:#c1c1c1}
+.dnx-links{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.dnx-links a{color:#fff;text-decoration:none;font-size:14px;font-weight:600;padding:7px 11px;border-radius:6px}
+.dnx-links a:hover{background:#2c4251}
+.dnx-links a[aria-current="page"]{background:#2c4251}
+.dnx-links a.dnx-cta{background:#0076a8}
+.dnx-links a.dnx-cta:hover{background:#00628c}
+</style>
+</head><body>
+<div class="dnx-bar"><div class="dnx-in"><a class="dnx-brand" href="/"><span class="dnx-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 18.5 L5.5 4.5 M5.5 18.5 L10 5.2 M5.5 18.5 L14.8 8 M5.5 18.5 L18.2 12.3 M5.5 18.5 L19.5 18.5"/><path d="M5.5 13.5 A5 5 0 0 1 10.5 18.5"/><path d="M5.5 9 A9.5 9.5 0 0 1 15 18.5"/><path d="M5.5 5 A13.5 13.5 0 0 1 19 18.5"/><circle cx="5.5" cy="18.5" r="1.5" fill="#fff" stroke="none"/><circle cx="11.8" cy="11.4" r="1.3" fill="#618b25" stroke="none"/></svg></span><span class="dnx-name">DealNet<span class="dnx-tag">M&amp;A intelligence for the market behind work</span></span></a><nav class="dnx-links" aria-label="Site"><a href="/">Deals</a><a href="/signals/">Signals Index</a><a href="/rankings/" aria-current="page">Rankings Index</a><a class="dnx-cta" href="https://www.charlesbedardllc.com/analystbriefingpreview" target="_blank" rel="noopener">Book a briefing</a></nav></div></div>
+<header class="cover">
+  <div class="wrap hero">
+    <div class="hero-copy">
+      <span class="eyebrow">Winter 26/27</span>
+      <h1>Rankings Index</h1>
+    </div>
+    <ul class="hero-facts" aria-label="What the index measures">
+      <li><b>Rankings</b></li>
+      <li><b>Trend Signals</b></li>
+    </ul>
+  </div>
+</header>
+
+<nav class="nav" aria-label="Pages"><div class="wrap">
+  <a href="#overview" id="tab-overview">1 · Index</a>
+  <a href="#explorer" id="tab-explorer">2 · MMR explorer</a>
+</div></nav>
+
+<main>
+
+<div class="wrap page" id="page-overview">
+
+  <section aria-labelledby="s-update">
+    <h2 id="s-update"><span>1</span> 2026 YTD update</h2>
+    <p class="lede">Year-to-date totals across the MMRs finished this year. The count starts over each January, and each figure shows last year's number below it.</p>
+    <div class="kpis">
+      <div class="kpi"><small>MMRs finished YTD</small><b>2</b><small>2025: 3</small></div>
+      <div class="kpi"><small>Firms ranked YTD</small><b>234</b><small>2025: 334</small></div>
+      <div class="kpi"><small>Total SAM YTD (known revenue)</small><b>$5.8B</b><small>2025: $30.6B</small></div>
+      <div class="kpi"><small>Average revenue per firm YTD</small><b>$24.8M</b><small>2025: $91.7M</small></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-sam">
+    <h2 id="s-sam"><span>2</span> SAM per MMR</h2>
+    <p class="lede">SAM is the sum of known revenue for every firm in the MMR, all sizes from $1M up. No industry estimates. MMRs are listed A–Z.</p>
+    <figure class="chart" aria-label="Total SAM per MMR, A–Z">
+      <figcaption>Total SAM per MMR ($M, known revenue) · A–Z</figcaption>
+      <div id="samChart"></div>
+      <p id="samEmpty" class="empty">Bars appear here as each MMR is finished: one bar per MMR, length set by its total SAM, firm count at the end of the bar.</p>
+    </figure>
+    <div class="tbl"><table>
+      <thead><tr><th>MMR (A–Z)</th><th class="num">Firms</th><th class="num">Total SAM</th><th class="num">Average</th><th class="num">Median</th><th>As of</th></tr></thead>
+      <tbody id="samRows">
+        <tr><td>MMR to be added</td><td class="num tbd">—</td><td class="num tbd">—</td><td class="num tbd">—</td><td class="num tbd">—</td><td class="tbd">Pending</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section aria-labelledby="s-trend">
+    <h2 id="s-trend"><span>3</span> SAM trend</h2>
+    <p class="lede">Two data points per MMR for now, pre-2025 and YE26, compared on firm count, total revenue, average and median. A third point is added with each refresh next year.</p>
+    <figure class="chart" aria-label="SAM trend per MMR, pre-2025 vs YE26">
+      <figcaption>SAM per MMR, pre-2025 vs YE26 ($M) · A–Z</figcaption>
+      <div class="legend"><span><i class="sw pre"></i>Pre-2025</span><span><i class="sw cur"></i>YE26</span></div>
+      <div id="trendChart"></div>
+      <p id="trendEmpty" class="empty">Paired bars appear here as each MMR is finished: pre-2025 above YE26, with the % change at the end.</p>
+    </figure>
+    <div class="tbl"><table>
+      <thead><tr><th>MMR (A–Z)</th><th class="num">Firms pre-2025 → YE26</th><th class="num">SAM pre-2025 → YE26</th><th class="num">Average</th><th class="num">Median</th></tr></thead>
+      <tbody id="trendRows">
+        <tr><td>MMR to be added</td><td class="num tbd">— → —</td><td class="num tbd">— → —</td><td class="num tbd">— → —</td><td class="num tbd">— → —</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="cta" aria-labelledby="s-cta1">
+    <h2 id="s-cta1">See the full rankings and comps</h2>
+    <p class="lede">Pick the MMRs you cover on page 2 for the risks, gaps and opportunities and the top Investor-Backed names. The detailed MMR, with every tier and the comps behind each rank, is covered in an Analyst Corporate Development Briefing.</p>
+    <a href="https://www.charlesbedardllc.com/analystbriefingpreview" target="_blank" rel="noopener">Book the Analyst Corporate Development Briefing</a>
+  </section>
+
+</div>
+
+<div class="wrap page" id="page-explorer" hidden>
+
+  <section aria-labelledby="s-pick">
+    <h2 id="s-pick"><span>4</span> Choose your MMRs</h2>
+    <p class="lede">Select one MMR or several. The risks, gaps and opportunities and the top 10 Investor-Backed list below follow your selection.</p>
+    <div class="picker" id="picker" role="group" aria-label="MMR selection"></div>
+    <p id="pickEmpty" class="empty">MMRs appear here as each one is finished.</p>
+  </section>
+
+  <section aria-labelledby="s-rgo">
+    <h2 id="s-rgo"><span>5</span> Risks, gaps and opportunities</h2>
+    <p class="lede">One read per selected MMR on the same three lenses, so markets compare side by side.</p>
+    <div id="rgoHost">
+      <div class="rgo">
+        <div><h3>Risks</h3><p>Concentration, sponsor saturation, shrinking median.</p></div>
+        <div><h3>Gaps</h3><p>Thin tiers, missing segments, revenue coverage below target.</p></div>
+        <div><h3>Opportunities</h3><p>SAM growing faster than the count of buyable targets.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-top">
+    <h2 id="s-top"><span>6</span> Top 10 Investor-Backed</h2>
+    <p class="lede">The ten largest Investor-Backed firms across your selected MMRs, ranked by revenue. Private and Early-Stage rankings stay blind and are covered in the briefing.</p>
+    <div class="tbl"><table class="blind">
+      <thead><tr><th class="num">Rank</th><th>Firm</th><th>MMR</th></tr></thead>
+      <tbody id="topRows">
+        <tr><td class="num">1</td><td class="name">▇▇▇▇▇▇▇</td><td class="tbd">Pending</td></tr>
+        <tr><td class="num">2</td><td class="name">▇▇▇▇▇</td><td class="tbd">Pending</td></tr>
+        <tr><td class="num">3</td><td class="name">▇▇▇▇▇▇</td><td class="tbd">Pending</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="cta" aria-labelledby="s-cta2">
+    <h2 id="s-cta2">See the full rankings and comps</h2>
+    <p class="lede">The detailed MMR, with every tier, the comps behind each rank and the analyst read on who is winning, is covered in an Analyst Corporate Development Briefing.</p>
+    <a href="https://www.charlesbedardllc.com/analystbriefingpreview" target="_blank" rel="noopener">Book the Analyst Corporate Development Briefing</a>
+  </section>
+
+</div>
+</main>
+
+<script>
+/* One object per finished MMR. Sorted A–Z automatically. $ figures in $M.
+   rgo: one line each. top_ib: Investor-Backed firms with revenue ($M); page shows top 10 across the selection. */
+const MMR_DATA = [
+  // { mmr, asof, firms, sam, avg, median, firms_pre, sam_pre, avg_pre, median_pre, rgo:{risks,gaps,opps}, top_ib:[{name,rev}] }
+  { mmr:"Compensation", asof:"Oct25", firms:69, sam:21700, avg:395.8, median:6.0,
+    rgo:{ risks:"Scale sits with the consulting publics, where compensation is a service line; two of them carry about 89% of SAM.",
+          gaps:"14 of 21 firms in the $2–29M sweet spot have no revenue on record yet.",
+          opps:"Fragmented, founder-heavy small end with 21 firms in the $2–29M sweet spot." },
+    top_ib:[ {name:"Payscale",rev:325.9}, {name:"Syndio",rev:45.9}, {name:"JDXpert",rev:14.9} ] },
+  { mmr:"EOR", asof:"2025", firms:63, sam:2122, avg:117.9, median:46.0,
+    rgo:{ risks:"Funded global platforms set the valuation ceiling and the comp set.",
+          gaps:"Revenue on record for about 1 in 3 firms; figures still from the 2025 market map.",
+          opps:"Deepest private bench in the catalog, with 13 firms in the $2–29M sweet spot." },
+    top_ib:[ {name:"Deel",rev:800}, {name:"Remote",rev:400}, {name:"Velocity Global",rev:300}, {name:"Papaya Global",rev:150}, {name:"Multiplier",rev:60}, {name:"Remofirst",rev:6}, {name:"Ontop",rev:6} ] },
+  { mmr:"NetSuite Services", asof:"Sep26", firms:165, sam:4700, avg:28.5, median:null, firms_pre:202, sam_pre:6800, avg_pre:51.0, median_pre:null,
+    rgo:{ risks:"Ownership shifting toward subsidiaries and PE platforms as independents are absorbed.",
+          gaps:"98 NetSuite firms identified and still pending review.",
+          opps:"Services universe grew 44% since Feb25 and stays predominantly bootstrapped." },
+    top_ib:[ {name:"Riveron",rev:268}, {name:"Net at Work",rev:147.4}, {name:"Velosio",rev:123.4}, {name:"ScaleNorth",rev:100}, {name:"Consero Global",rev:100}, {name:"Bridgepoint Consulting",rev:71}, {name:"Netgain Solutions",rev:32}, {name:"inDinero",rev:22}, {name:"SaaS Consulting Group",rev:19}, {name:"SquareWorks Consulting",rev:13} ] },
+  { mmr:"RRI", asof:"Mar26", firms:69, sam:1100, avg:76.8, median:15.5,
+    rgo:{ risks:"Scale players are all private or PE-held, so consolidation runs above the $2–29M band.",
+          gaps:"11 of 18 sweet-spot firms have no revenue on record yet.",
+          opps:"18 firms in the $2–29M sweet spot with the founder-owned bench intact." },
+    top_ib:[ {name:"Workhuman",rev:1102.3}, {name:"Achievers",rev:473.1}, {name:"Augeo",rev:257.5}, {name:"Advantage Club Technologies",rev:117.3}, {name:"Terryberry",rev:60.9}, {name:"Bonusly",rev:14.7} ] },
+];
+const rows = MMR_DATA.slice().sort((a,b)=>a.mmr.localeCompare(b.mmr));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const m = v => v==null ? '—' : v>=1000 ? '$'+(v/1000).toFixed(1)+'B' : '$'+(v<100 ? Number(v).toFixed(1) : Math.round(v))+'M';
+
+/* Page 1 charts + tables */
+(function(){
+  if(!rows.length) return;
+  document.getElementById('samEmpty').hidden = true;
+  const max = Math.max(...rows.map(r=>r.sam)) || 1;
+  document.getElementById('samChart').innerHTML = rows.map(r=>`<div class="bar-row"><span class="lbl">${esc(r.mmr)}</span><div class="bar-track"><div class="bar" style="width:${(r.sam/max*100).toFixed(1)}%"></div></div><span class="val">${m(r.sam)} · ${r.firms}</span></div>`).join('');
+  document.getElementById('samRows').innerHTML = rows.map(r=>`<tr><td>${esc(r.mmr)}</td><td class="num">${r.firms}</td><td class="num">${m(r.sam)}</td><td class="num">${m(r.avg)}</td><td class="num">${m(r.median)}</td><td>${esc(r.asof||'')}</td></tr>`).join('');
+  const t = rows.filter(r=>r.sam_pre!=null);
+  if(!t.length) return;
+  document.getElementById('trendEmpty').hidden = true;
+  const tmax = Math.max(...t.flatMap(r=>[r.sam,r.sam_pre])) || 1;
+  document.getElementById('trendChart').innerHTML = t.map(r=>{const ch=r.sam_pre?((r.sam-r.sam_pre)/r.sam_pre*100):0;
+    return `<div class="bar-row"><span class="lbl">${esc(r.mmr)}</span><div class="pair"><div class="bar-track"><div class="bar pre" style="width:${(r.sam_pre/tmax*100).toFixed(1)}%"></div></div><div class="bar-track"><div class="bar" style="width:${(r.sam/tmax*100).toFixed(1)}%"></div></div></div><span class="val ${ch>=0?'up':''}">${ch>=0?'+':''}${ch.toFixed(0)}%</span></div>`}).join('');
+  document.getElementById('trendRows').innerHTML = t.map(r=>`<tr><td>${esc(r.mmr)}</td><td class="num">${r.firms_pre ?? '—'} → ${r.firms}</td><td class="num">${m(r.sam_pre)} → ${m(r.sam)}</td><td class="num">${m(r.avg_pre)} → ${m(r.avg)}</td><td class="num">${m(r.median_pre)} → ${m(r.median)}</td></tr>`).join('');
+})();
+
+/* Page 2: selection drives RGO + top 10 Investor-Backed */
+const picked = new Set(rows.map(r=>r.mmr));
+function renderExplorer(){
+  const picker = document.getElementById('picker');
+  if(!rows.length) return;
+  document.getElementById('pickEmpty').hidden = true;
+  picker.innerHTML = rows.map(r=>`<button type="button" class="chip" aria-pressed="${picked.has(r.mmr)}" data-mmr="${esc(r.mmr)}">${esc(r.mmr)}</button>`).join('')
+    + `<button type="button" class="chip ghost" data-all="1">${picked.size===rows.length?'Clear all':'Select all'}</button>`;
+  const sel = rows.filter(r=>picked.has(r.mmr));
+  document.getElementById('rgoHost').innerHTML = sel.length ? sel.map(r=>`<div class="mmr-block"><h3 class="mmr">${esc(r.mmr)}</h3><div class="rgo"><div><h3>Risks</h3><p>${esc(r.rgo?.risks||'—')}</p></div><div><h3>Gaps</h3><p>${esc(r.rgo?.gaps||'—')}</p></div><div><h3>Opportunities</h3><p>${esc(r.rgo?.opps||'—')}</p></div></div></div>`).join('')
+    : '<p class="empty">Select at least one MMR above.</p>';
+  const top = sel.flatMap(r=>(r.top_ib||[]).map(f=>({...f, mmr:r.mmr}))).sort((a,b)=>b.rev-a.rev).slice(0,10);
+  document.getElementById('topRows').innerHTML = top.length ? top.map((f,i)=>`<tr><td class="num">${i+1}</td><td>${esc(f.name)}</td><td>${esc(f.mmr)}</td></tr>`).join('')
+    : '<tr><td colspan="3" class="tbd">Select at least one MMR above.</td></tr>';
+}
+document.getElementById('picker').addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  if(b.dataset.all){ if(picked.size===rows.length) picked.clear(); else rows.forEach(r=>picked.add(r.mmr)); }
+  else { const k=b.dataset.mmr; picked.has(k)?picked.delete(k):picked.add(k); }
+  renderExplorer();
+});
+renderExplorer();
+
+/* Two pages on the hash: #overview (default) and #explorer */
+function route(){
+  const p = location.hash === '#explorer' ? 'explorer' : 'overview';
+  document.getElementById('page-overview').hidden = p!=='overview';
+  document.getElementById('page-explorer').hidden = p!=='explorer';
+  document.getElementById('tab-overview').setAttribute('aria-current', p==='overview'?'page':'false');
+  document.getElementById('tab-explorer').setAttribute('aria-current', p==='explorer'?'page':'false');
+}
+addEventListener('hashchange', ()=>{ route(); scrollTo(0,0); });
+route();
+</script>
+
+<footer><div class="wrap">
+  <p class="defs">Where the revenue sits in every market we rank, and where it is moving: total known revenue across each Market Map Ranking, the shift since 2025, and the openings for sponsors, founders and operators. <b>Rankings</b> = SAM per MMR, the known revenue of every ranked firm at $1M+, with the top 10 Investor-Backed named. <b>Trend Signals</b> = pre-2025 to YE26 on firm count, total, average and median, with the risks, gaps and openings.</p>
+  <span>Source: DealNet</span>
+  <span>Prepared by CharlesBedardLLC · <a href="https://www.charlesbedardllc.com">charlesbedardllc.com</a> · Source: DealNet</span>
+</div></footer>
+
+</body></html>
