@@ -485,7 +485,7 @@
   <section id="explore" hidden>
     <div>
       <h2><span class="n">1</span>Choose your Market Map Rankings</h2>
-      <p class="note">Pick one ranking or several. The table and the top 10 Investor-Backed list below follow your selection. Blue, underlined names open the findings preview.</p>
+      <p class="note">Pick one ranking or several. The table and the risks and opportunities below follow your selection. Blue, underlined names open the findings preview.</p>
       <div class="ri-tools"><div class="ri-chips" data-draw="sector-chips" data-source="rankings"></div></div>
       <div class="ri-sel" data-draw="mmr-chips" data-source="rankings"></div>
     </div>
@@ -514,19 +514,10 @@
       <div class="rgo" data-draw="rgo"></div>
     </div>
 
-    <div>
-      <h2><span class="n">4</span>Top 10 Investor-Backed</h2>
-      <p class="note">The ten largest Investor-Backed firms across your selection, by revenue. Private and Early-Stage rankings stay blind and are covered in the briefing.</p>
-      <div class="ri-tablebox">
-        <table data-source="investor_order" data-row-key="id">
-          <thead><tr><th data-field="order">Rank</th><th data-field="firm">Firm</th><th data-field="mmr">Market Map Ranking</th></tr></thead>
-          <tbody data-draw="top10"></tbody>
-        </table>
-      </div>
-    </div>
+    
 
     <div>
-      <h2><span class="n">5</span>Every market map</h2>
+      <h2><span class="n">4</span>Every market map</h2>
       <p class="note">The full body of work since 2022, newest first, A–Z within each year. Blue, underlined names open the Solve the Value post; maps still in progress are marked "coming".</p>
       <div class="ri-tools"><input type="search" class="ri-cov-q" placeholder="Search market maps" aria-label="Search market maps"><div class="ri-chips" data-draw="cov-chips" data-source="coverage"></div></div>
       <div class="ri-tablebox">
@@ -588,7 +579,7 @@
 
   <footer class="wrap ri-foot">
     <p><b>Where the revenue sits in every market we rank, and where it is moving.</b> This index shows the total known revenue (SAM) in each Market Map Ranking, how it has shifted since 2025, and where the openings are for sponsors, founders and operators.</p>
-    <p><b>Index:</b> SAM per Market Map Ranking, meaning the known revenue of every ranked firm at $1M or more, and the trend from pre-2025 to YE26 on firm count, total, average and median. <b>Explore:</b> the risks and openings in each market, with the top 10 Investor-Backed firms named.</p>
+    <p><b>Index:</b> SAM per Market Map Ranking, meaning the known revenue of every ranked firm at $1M or more, and the trend from pre-2025 to YE26 on firm count, total, average and median. <b>Explore:</b> the risks and openings in each market.</p>
     <p><b>Definitions:</b> SAM (serviceable addressable market) is the sum of known latest year-end revenue for every firm in a Market Map Ranking at $1M or more, with no industry estimates. Revenues are directional analyst estimates from publicly available data, not audited figures. Investor-Backed means PE-backed, $29M+ raised, Series C or later, or late stage.</p>
     <p>Prepared by CharlesBedardLLC · <a href="https://www.charlesbedardllc.com" target="_blank" rel="noopener">charlesbedardllc.com</a> · Source: DealNet</p>
   </footer>
